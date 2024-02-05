@@ -1,27 +1,23 @@
-package com.solo.bulletinboard2.posting.entity;
+package com.solo.bulletinboard2.comment.entity;
 
-import com.solo.bulletinboard2.comment.entity.Comment;
 import com.solo.bulletinboard2.member.entity.Member;
+import com.solo.bulletinboard2.posting.entity.Posting;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Posting {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postingId;
-
-    @Column(nullable = false)
-    private String title;
+    private Long commentId;
 
     @Column(nullable = false)
     private String content;
@@ -36,7 +32,8 @@ public class Posting {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @OneToMany(mappedBy = "posting", cascade = CascadeType.REMOVE)
-    private List<Comment> comments;
+    @ManyToOne
+    @JoinColumn(name = "POSTING_ID")
+    private Posting posting;
 
 }

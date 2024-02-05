@@ -6,6 +6,7 @@ import com.solo.bulletinboard2.posting.entity.Posting;
 import org.mapstruct.Mapper;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface PostingMapper {
@@ -40,6 +41,24 @@ public interface PostingMapper {
                 .build();
 
         response.setMemberInfo(memberInfo);
+
+        if(posting.getComments() != null) {
+            List<PostingDto.CommentResponse> commentResponses = posting.getComments()
+                    .stream().map(comment -> PostingDto.CommentResponse.builder()
+                            .commentId(comment.getCommentId())
+                            .content(comment.getContent())
+                            .createdAt(comment.getCreatedAt())
+                            .modifiedAt(comment.getModifiedAt())
+                            .commentMemberInfo(PostingDto.CommentMemberInfo.builder()
+                                    .memberId(comment.getMember().getMemberId())
+                                    .email(comment.getMember().getEmail())
+                                    .nickname(comment.getMember().getNickname())
+                                    .build())
+                            .build())
+                    .collect(Collectors.toList());
+
+            response.setCommentResponses(commentResponses);
+        }
 
         return response;
     }

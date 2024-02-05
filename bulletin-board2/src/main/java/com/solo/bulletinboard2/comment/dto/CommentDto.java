@@ -1,4 +1,4 @@
-package com.solo.bulletinboard2.posting.dto;
+package com.solo.bulletinboard2.comment.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -7,26 +7,24 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-public class PostingDto {
+public class CommentDto {
 
     @Getter
     @Setter
     public static class Post{
         @NotNull
-        private String title;
-        @NotNull
         private String content;
         @Positive
         private long memberId;
+        @Positive
+        private long postingId;
     }
 
     @Getter
     @Setter
     public static class Patch{
-        private long postingId;
-        private String title;
+        private long commentId;
         private String content;
     }
 
@@ -34,33 +32,12 @@ public class PostingDto {
     @Setter
     @Builder
     public static class Response{
-        private long postingId;
-        private String title;
-        private String content;
-        private LocalDateTime createdAt;
-        private LocalDateTime modifiedAt;
-        private MemberInfo memberInfo;
-        private List<CommentResponse> commentResponses;
-    }
-
-    @Getter
-    @Setter
-    @Builder
-    public static class CommentResponse{
         private long commentId;
         private String content;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
-        private CommentMemberInfo commentMemberInfo;
-    }
-
-    @Getter
-    @Setter
-    @Builder
-    public static class CommentMemberInfo{
-        private long memberId;
-        private String email;
-        private String nickname;
+        private long postingId;
+        private MemberInfo memberInfo;
     }
 
     @Getter
@@ -71,5 +48,4 @@ public class PostingDto {
         private String email;
         private String nickname;
     }
-
 }
