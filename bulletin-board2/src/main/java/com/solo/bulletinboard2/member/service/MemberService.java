@@ -33,10 +33,10 @@ public class MemberService {
     public Member findVerifiedMember(long memberId){
         Optional<Member> optionalMember = memberRepository.findById(memberId);
 
-        Member findMember = optionalMember
+        Member foundMember = optionalMember
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
-        return findMember;
+        return foundMember;
     }
 
     public Member createMember(Member member){
@@ -45,12 +45,12 @@ public class MemberService {
     }
 
     public Member updateMember(Member member){
-        Member findMember = findVerifiedMember(member.getMemberId());
+        Member foundMember = findVerifiedMember(member.getMemberId());
 
         Optional.ofNullable(member.getNickname())
-                .ifPresent(nickname -> findMember.setNickname(nickname));
+                .ifPresent(nickname -> foundMember.setNickname(nickname));
 
-        return memberRepository.save(findMember);
+        return memberRepository.save(foundMember);
     }
 
     public Member findMember(long memberId){
@@ -63,7 +63,7 @@ public class MemberService {
     }
 
     public void deleteMember(long memberId){
-        Member findMember = findVerifiedMember(memberId);
-        memberRepository.delete(findMember);
+        Member foundMember = findVerifiedMember(memberId);
+        memberRepository.delete(foundMember);
     }
 }

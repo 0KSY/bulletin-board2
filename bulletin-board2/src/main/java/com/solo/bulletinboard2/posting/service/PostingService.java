@@ -37,16 +37,16 @@ public class PostingService {
     }
 
     public Posting updatePosting(Posting posting){
-        Posting findPosting = findVerifiedPosting(posting.getPostingId());
+        Posting foundPosting = findVerifiedPosting(posting.getPostingId());
 
         Optional.ofNullable(posting.getTitle())
-                .ifPresent(title -> findPosting.setTitle(title));
+                .ifPresent(title -> foundPosting.setTitle(title));
         Optional.ofNullable(posting.getContent())
-                .ifPresent(content -> findPosting.setContent(content));
+                .ifPresent(content -> foundPosting.setContent(content));
 
-        findPosting.setModifiedAt(LocalDateTime.now());
+        foundPosting.setModifiedAt(LocalDateTime.now());
 
-        return postingRepository.save(findPosting);
+        return postingRepository.save(foundPosting);
     }
 
     public Posting findPosting(long postingId){
