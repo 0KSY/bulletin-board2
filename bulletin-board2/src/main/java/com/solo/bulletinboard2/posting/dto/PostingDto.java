@@ -1,5 +1,6 @@
 package com.solo.bulletinboard2.posting.dto;
 
+import com.solo.bulletinboard2.postingTag.dto.PostingTagDto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;
@@ -20,6 +21,8 @@ public class PostingDto {
         private String content;
         @Positive
         private long memberId;
+
+        private List<PostingTagDto> postingTagDtos;
     }
 
     @Getter
@@ -40,7 +43,16 @@ public class PostingDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
         private MemberInfo memberInfo;
+        private List<TagResponse> tagResponses;
         private List<CommentResponse> commentResponses;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class TagResponse{
+        private long tagId;
+        private String tagName;
     }
 
     @Getter
@@ -51,16 +63,7 @@ public class PostingDto {
         private String content;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
-        private CommentMemberInfo commentMemberInfo;
-    }
-
-    @Getter
-    @Setter
-    @Builder
-    public static class CommentMemberInfo{
-        private long memberId;
-        private String email;
-        private String nickname;
+        private MemberInfo memberInfo;
     }
 
     @Getter

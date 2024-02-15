@@ -3,6 +3,8 @@ package com.solo.bulletinboard2.posting.mapper;
 import com.solo.bulletinboard2.member.entity.Member;
 import com.solo.bulletinboard2.posting.dto.PostingDto;
 import com.solo.bulletinboard2.posting.entity.Posting;
+import com.solo.bulletinboard2.postingTag.entity.PostingTag;
+import com.solo.bulletinboard2.tag.entity.Tag;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -19,6 +21,23 @@ public interface PostingMapper {
         posting.setTitle(postingPostDto.getTitle());
         posting.setContent(postingPostDto.getContent());
         posting.setMember(member);
+
+        if(postingPostDto.getPostingTagDtos() != null){
+            List<PostingTag> postingTags = postingPostDto.getPostingTagDtos().stream()
+                    .map(postingTagDto -> {
+                        Tag tag = new Tag();
+                        tag.setTagId(postingTagDto.getTagId());
+
+                        PostingTag postingTag = new PostingTag();
+
+                        postingTag.setPosting(posting);
+                        postingTag.setTag(tag);
+
+                        return postingTag;
+                    }).collect(Collectors.toList());
+
+            posting.setPostingTags(postingTags);
+        }
 
         return posting;
     }
@@ -42,6 +61,20 @@ public interface PostingMapper {
 
         response.setMemberInfo(memberInfo);
 
+        if(posting.getPostingTags() != null){
+
+            List<PostingDto.TagResponse> tagResponses
+                    = posting.getPostingTags().stream()
+                    .map(postingTag -> PostingDto.TagResponse.builder()
+                            .tagId(postingTag.getTag().getTagId())
+                            .tagName(postingTag.getTag().getTagName())
+                            .build()
+                    ).collect(Collectors.toList());
+
+            response.setTagResponses(tagResponses);
+
+        }
+
         if(posting.getComments() != null) {
             List<PostingDto.CommentResponse> commentResponses = posting.getComments()
                     .stream().map(comment -> PostingDto.CommentResponse.builder()
@@ -49,7 +82,7 @@ public interface PostingMapper {
                             .content(comment.getContent())
                             .createdAt(comment.getCreatedAt())
                             .modifiedAt(comment.getModifiedAt())
-                            .commentMemberInfo(PostingDto.CommentMemberInfo.builder()
+                            .memberInfo(PostingDto.MemberInfo.builder()
                                     .memberId(comment.getMember().getMemberId())
                                     .email(comment.getMember().getEmail())
                                     .nickname(comment.getMember().getNickname())

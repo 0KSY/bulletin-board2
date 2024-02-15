@@ -66,6 +66,7 @@ public class PostingController {
                 mapper.postingsToPostingPageResponseDtos(postings), pagePostings), HttpStatus.OK);
     }
 
+
     @DeleteMapping("/{posting-id}")
     public ResponseEntity deletePosting(@PathVariable("posting-id") @Positive long postingId){
         postingService.deletePosting(postingId);
