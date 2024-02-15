@@ -72,4 +72,13 @@ public class PostingDto {
         private String nickname;
     }
 
+    @Getter
+    @Setter
+    @Builder
+    public static class PageResponse{
+        private long postingId;
+        private String title;
+        private MemberInfo memberInfo;
+    }
+
 }

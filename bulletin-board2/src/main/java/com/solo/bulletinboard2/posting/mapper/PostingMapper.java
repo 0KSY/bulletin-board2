@@ -63,6 +63,23 @@ public interface PostingMapper {
         return response;
     }
 
-    List<PostingDto.Response> postingsToPostingResponseDtos(List<Posting> postings);
+    default PostingDto.PageResponse postingToPostingPageResponseDto(Posting posting){
+        PostingDto.PageResponse pageResponse = PostingDto.PageResponse.builder()
+                .postingId(posting.getPostingId())
+                .title(posting.getTitle())
+                .build();
+
+        PostingDto.MemberInfo memberInfo = PostingDto.MemberInfo.builder()
+                .memberId(posting.getMember().getMemberId())
+                .email(posting.getMember().getEmail())
+                .nickname(posting.getMember().getNickname())
+                .build();
+
+        pageResponse.setMemberInfo(memberInfo);
+
+        return pageResponse;
+    }
+
+    List<PostingDto.PageResponse> postingsToPostingPageResponseDtos(List<Posting> postings);
 
 }

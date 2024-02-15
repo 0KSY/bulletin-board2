@@ -63,7 +63,7 @@ public class PostingController {
         List<Posting> postings = pagePostings.getContent();
 
         return new ResponseEntity(new MultiResponseDto<>(
-                mapper.postingsToPostingResponseDtos(postings), pagePostings), HttpStatus.OK);
+                mapper.postingsToPostingPageResponseDtos(postings), pagePostings), HttpStatus.OK);
     }
 
     @DeleteMapping("/{posting-id}")
