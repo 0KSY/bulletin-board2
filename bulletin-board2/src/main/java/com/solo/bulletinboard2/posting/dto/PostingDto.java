@@ -40,6 +40,7 @@ public class PostingDto {
         private long postingId;
         private String title;
         private String content;
+        private int likeCount;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
         private MemberInfo memberInfo;

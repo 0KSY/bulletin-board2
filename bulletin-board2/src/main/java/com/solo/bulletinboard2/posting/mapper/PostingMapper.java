@@ -61,6 +61,13 @@ public interface PostingMapper {
 
         response.setMemberInfo(memberInfo);
 
+        if(posting.getPostingLikes() != null){
+            response.setLikeCount(posting.getPostingLikes().size());
+        }
+        else{
+            response.setLikeCount(0);
+        }
+
         if(posting.getPostingTags() != null){
 
             List<PostingDto.TagResponse> tagResponses
