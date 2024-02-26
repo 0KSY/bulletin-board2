@@ -45,7 +45,7 @@ public class PostingDto {
         private LocalDateTime modifiedAt;
         private MemberInfo memberInfo;
         private List<TagResponse> tagResponses;
-        private List<CommentResponse> commentResponses;
+        private List<ParentCommentResponse> parentCommentResponses;
     }
 
     @Getter
@@ -59,7 +59,19 @@ public class PostingDto {
     @Getter
     @Setter
     @Builder
-    public static class CommentResponse{
+    public static class ParentCommentResponse{
+        private long commentId;
+        private String content;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+        private MemberInfo memberInfo;
+        private List<ChildCommentResponse> childCommentResponses;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class ChildCommentResponse{
         private long commentId;
         private String content;
         private LocalDateTime createdAt;

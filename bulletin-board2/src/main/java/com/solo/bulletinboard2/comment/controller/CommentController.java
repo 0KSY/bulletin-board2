@@ -46,4 +46,11 @@ public class CommentController {
 
         return new ResponseEntity(new SingleResponseDto<>(mapper.commentToCommentResponseDto(comment)), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{comment-id}")
+    public ResponseEntity deleteComment(@PathVariable("comment-id") @Positive long commentId){
+        commentService.deleteComment(commentId);
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }

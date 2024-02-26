@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,6 +28,13 @@ public class Comment {
 
     @Column(nullable = false)
     private LocalDateTime modifiedAt = LocalDateTime.now();
+
+    @ManyToOne
+    @JoinColumn(name = "PARENT_COMMENT_ID")
+    private Comment parent;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE)
+    private List<Comment> children;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")

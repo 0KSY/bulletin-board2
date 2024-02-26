@@ -82,9 +82,11 @@ public interface PostingMapper {
 
         }
 
-        if(posting.getComments() != null) {
-            List<PostingDto.CommentResponse> commentResponses = posting.getComments()
-                    .stream().map(comment -> PostingDto.CommentResponse.builder()
+        if(posting.getComments() != null){
+            List<PostingDto.ParentCommentResponse> parentCommentResponses
+                    = posting.getComments().stream()
+                    .filter(comment -> comment.getParent() == null)
+                    .map(comment -> PostingDto.ParentCommentResponse.builder()
                             .commentId(comment.getCommentId())
                             .content(comment.getContent())
                             .createdAt(comment.getCreatedAt())
@@ -94,10 +96,24 @@ public interface PostingMapper {
                                     .email(comment.getMember().getEmail())
                                     .nickname(comment.getMember().getNickname())
                                     .build())
+                            .childCommentResponses(comment.getChildren().stream()
+                                    .map(childComment -> PostingDto.ChildCommentResponse.builder()
+                                            .commentId(childComment.getCommentId())
+                                            .content(childComment.getContent())
+                                            .createdAt(childComment.getCreatedAt())
+                                            .modifiedAt(childComment.getModifiedAt())
+                                            .memberInfo(PostingDto.MemberInfo.builder()
+                                                    .memberId(childComment.getMember().getMemberId())
+                                                    .email(childComment.getMember().getEmail())
+                                                    .nickname(childComment.getMember().getNickname())
+                                                    .build())
+                                            .build())
+                                    .collect(Collectors.toList()))
                             .build())
                     .collect(Collectors.toList());
 
-            response.setCommentResponses(commentResponses);
+            response.setParentCommentResponses(parentCommentResponses);
+
         }
 
         return response;

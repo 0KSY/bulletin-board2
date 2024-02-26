@@ -25,6 +25,13 @@ public interface CommentMapper {
         comment.setMember(member);
         comment.setPosting(posting);
 
+        if(commentPostDto.getParentId() != 0){
+            Comment parentComment = new Comment();
+            parentComment.setCommentId(commentPostDto.getParentId());
+
+            comment.setParent(parentComment);
+        }
+
         return comment;
     }
 

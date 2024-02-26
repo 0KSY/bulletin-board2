@@ -44,4 +44,9 @@ public class CommentService {
         return commentRepository.save(foundComment);
     }
 
+    public void deleteComment(long commentId){
+        Comment foundComment = findVerifiedComment(commentId);
+        commentRepository.delete(foundComment);
+    }
+
 }
